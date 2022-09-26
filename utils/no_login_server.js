@@ -7,8 +7,9 @@ import {
     setUuid,
     getUuid,
 } from "@/utils/auth";
-// import config from "@/config.js";
-var config = require('../config.js').config
+
+var config = require('@/config.js').config
+// var config = cfg.config
 import store from "@/store";
 import ex from "weblib/ex";
 // import { pop_vue_com_ele } from "weblib/pc_cfg/elePop.vue";
