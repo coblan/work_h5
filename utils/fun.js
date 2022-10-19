@@ -5,5 +5,8 @@ export  default  {
         }else{
             return  `${cfg.config.media_url}${url}`
         }
+    },
+    can_navibar(router){
+        return false
     }
 }
