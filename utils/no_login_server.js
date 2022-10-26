@@ -269,10 +269,9 @@ const request = (method, url, data, config = {}) => {
 
 export const server = {
     get(url, data, config) {
-        if(!url.startsWith('http')){
-            // axios.defaults.baseURL = store.state.url.service;
-            url = store.state.url.service + url
-        }
+        // if(!url.startsWith('http')){
+        //     url = store.state.url.service + url
+        // }
         // return request("get", url, data, config);
         if(data){
             url = ex.appendSearch(url,data)
@@ -281,10 +280,9 @@ export const server = {
         return request("get", url,{}, config);
     },
     post(url, data, config) {
-        if(!url.startsWith('http')){
-            // axios.defaults.baseURL = store.state.url.service;
-            url = store.state.url.service + url
-        }
+        // if(!url.startsWith('http')){
+        //     url = store.state.url.service + url
+        // }
         return request("post", url, data, config);
     },
     put(url, data, config) {
