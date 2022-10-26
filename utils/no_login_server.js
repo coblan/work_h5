@@ -126,10 +126,29 @@ async function pop_login_window(){
 
 }
 
+async function process_resp(res){
+    if (res) {
+        const data = {
+            data: res.data,
+        };
+        if (res.data.success==false ) {
+            // 走不到内部函数的时候关掉loading
+            cfg.hide_load();
+            if(res.data.error){
+                cfg.showError(res.data.error);
+            }else{
+                cfg.showError('后台请求错误')
+            }
+
+        } else {
+            return data
+        }
+    }
+}
 async function process_401(config){
     if(network.token_getter){
         await network.token_getter.promise
-        return axios.request(config); //response.config
+        return  axios.request(config); //response.config
     }else{
         network.token_getter= new ex.FreePromise()
         let tokenObj = getToken();
@@ -149,7 +168,8 @@ async function process_401(config){
 
         console.log('token过期，刷新token')
         try {
-            var res = await axios.post(`/home/token/refresh/${tokenObj.refreshToken}`, {})
+            var url = store.state.url.service + `/home/token/refresh/${tokenObj.refreshToken}`
+            var res = await axios.post(url, {})
 
             if (res.data.success) {
                 setToken(res.data.data);
@@ -191,24 +211,29 @@ const request = (method, url, data, config = {}) => {
         axios
             .request(options)
             .then( async (res) => {
-                // if (res && res.response && res.response.status == 401) {
-                //   // 走不到内部函数的时候关掉loading
-                //   cfg.hide_load();
-                //   debugger
-                //   res = await process_401(res.response.config)
-                // }
-                if (res) {
-                    const data = {
-                        data: res.data,
-                    };
-                    if (!res.data.success && res.data.error) {
-                        // 走不到内部函数的时候关掉loading
-                        cfg.hide_load();
-                        cfg.showError(res.data.error);
-                    } else {
-                        resolve(data);
-                    }
+                var processed_data = await process_resp(res)
+                if(processed_data){
+                    resolve(processed_data)
                 }
+
+                // process_resp(res,resolve)
+                // if (res) {
+                //     const data = {
+                //         data: res.data,
+                //     };
+                //     if (res.data.success==false ) {
+                //         // 走不到内部函数的时候关掉loading
+                //         cfg.hide_load();
+                //         if(res.data.error){
+                //             cfg.showError(res.data.error);
+                //         }else{
+                //             cfg.showError('后台请求错误')
+                //         }
+                //
+                //     } else {
+                //         resolve(data);
+                //     }
+                // }
             })
             .catch(async (error) => {
                 // 在这里做错误处理
@@ -218,7 +243,10 @@ const request = (method, url, data, config = {}) => {
                     if(res=='need re-login'){
                         cfg.showMsg("请先在App中登录")
                     }else{
-                        resolve(res)
+                        var processed_data = await process_resp(res)
+                        if(processed_data){
+                            resolve(processed_data)
+                        }
                     }
                     return;
                 }else if (error.response.status == 403) {
