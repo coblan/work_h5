@@ -241,7 +241,8 @@ const request = (method, url, data, config = {}) => {
                     // seal H5里面展示不支持登录
                     var res = await process_401(error.response.config)
                     if(res=='need re-login'){
-                        cfg.showMsg("请先在App中登录")
+                        // cfg.showMsg("请先在App中登录")
+                        cfg.login()
                     }else{
                         var processed_data = await process_resp(res)
                         if(processed_data){
