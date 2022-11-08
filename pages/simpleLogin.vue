@@ -13,7 +13,7 @@
 </template>
 <script>
 import fields from 'weblib/mb/fields.vue'
-import imageValidate from 'weblib/mb/uis/imageValidate.vue'
+import imageValidate from 'weblib/mb/pop/imageValidate.vue'
 import  ex from 'weblib/ex'
 import {setToken} from '@/utils/auth'
 export default {
