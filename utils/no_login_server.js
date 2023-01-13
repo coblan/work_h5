@@ -168,14 +168,14 @@ async function process_401(config){
 
         console.log('token过期，刷新token')
         try {
+            // var url = store.state.url.service + `/home/token/refresh/${tokenObj.refreshToken}?t=1`
             var url = store.state.url.service + `/home/token/refresh/${tokenObj.refreshToken}`
             var res = await axios.post(url, {})
-
             if (res.data.success) {
                 //
                 setToken(res.data.data);
                // 更新下
-                tokenObj = getToken();
+               //  tokenObj = getToken();
 
                 axios.defaults.headers[
                     "Authorization"
@@ -188,11 +188,15 @@ async function process_401(config){
                     network.token_getter = null
                 },1000)
                 return axios.request(config)
-
             }
         } catch(err){
             // router.openPage('login')
             // removeToken();
+            if(err.response.status==403){
+                cfg.hide_load()
+                cfg.toast('账号在其他设备登录')
+                return
+            }
         };
         // 前面没有return，证明出问题了
         console.log("刷新token失败，需要重新登录");
@@ -245,7 +249,7 @@ const request = (method, url, data, config = {}) => {
                     // seal H5里面展示不支持登录
                     var res = await process_401(error.response.config)
                     if(res=='need re-login'){
-                        cfg.showMsg("请先在App中登录")
+                        cfg.showMsg("请重新登录")
                         // cfg.login()
                     }else{
                         var processed_data = await process_resp(res)
