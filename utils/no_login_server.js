@@ -151,7 +151,7 @@ async function process_401(config){
         return  axios.request(config); //response.config
     }else{
         network.token_getter= new ex.FreePromise()
-        let tokenObj = getToken();
+        var tokenObj = getToken();
         if (!tokenObj) {
             cfg.hide_load()
             // return await  pop_login_window()
@@ -172,7 +172,11 @@ async function process_401(config){
             var res = await axios.post(url, {})
 
             if (res.data.success) {
+                //
                 setToken(res.data.data);
+               // 更新下
+                tokenObj = getToken();
+
                 axios.defaults.headers[
                     "Authorization"
                     ] = `${tokenObj.tokenType} ${tokenObj.accessToken}`;
