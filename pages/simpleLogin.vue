@@ -23,7 +23,7 @@ export default {
   data(){
     return {
       heads:[
-        {name:'phone',label:'手机号码',editor: 'com-field-phone',country_code:['+86']},
+        {name:'phone',label:'手机号码',editor: 'com-field-phone',country_code:['+86','+852']},
         {name:'vCode',label:'验证码',editor: 'com-field-validate-code',sendCode:async ({vc})=>{
 
             var send_code = async  (vkey,vcode)=>{
