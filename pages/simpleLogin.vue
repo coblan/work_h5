@@ -75,6 +75,9 @@ export default {
     }
 
   },
+  mounted() {
+      localStorage.removeItem('token')
+  },
   methods:{
     async doLogin(){
       var error = await ex.vld.validate(this.row,{
