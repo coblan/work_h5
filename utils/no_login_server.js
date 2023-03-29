@@ -277,6 +277,13 @@ const request = (method, url, data, config = {}) => {
 };
 
 export const server = {
+    noBaseGet(url, data, config){
+        if(url.startsWith('/')){
+            url = location.origin + url
+        }
+
+        return this.get(url, data, config)
+    },
     get(url, data, config) {
         // if(!url.startsWith('http')){
         //     url = store.state.url.service + url
