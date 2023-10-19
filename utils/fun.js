@@ -4,8 +4,13 @@ export  default  {
         if(url.startsWith('http')){
             return url
         }else{
-            var media_url = store.state.url.cdn[0]
-            return  `${media_url}${url}`
+            if(store.state.url.endsWith('.aes')){
+                var cdn_domain = store.state.url.encryptCdn[0]
+
+            }else{
+                var cdn_domain = store.state.url.cdn[0]
+            }
+            return  `${cdn_domain}${url}`
             // return  `${cfg.config.media_url}${url}`
         }
     },
