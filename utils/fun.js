@@ -4,7 +4,7 @@ export  default  {
         if(url.startsWith('http')){
             return url
         }else{
-            if(store.state.url.endsWith('.aes')){
+            if(url.endsWith('.aes')){
                 var cdn_domain = store.state.url.encryptCdn[0]
 
             }else{
