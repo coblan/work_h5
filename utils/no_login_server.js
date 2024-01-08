@@ -194,7 +194,7 @@ async function process_401(config){
         } catch(err){
             // router.openPage('login')
             // removeToken();
-            if(err.response.status==403){
+            if(err.response.status==603){
                 cfg.hide_load()
                 cfg.toast('账号在其他设备登录')
                 return
@@ -260,7 +260,7 @@ const request = (method, url, data, config = {}) => {
                         }
                     }
                     return;
-                }else if (error.response.status == 403) {
+                }else if (error.response.status == 603) {
                     //特殊处理
                     // cfg.showError(error);
                     cfg.hide_load()
