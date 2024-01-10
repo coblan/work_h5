@@ -73,7 +73,7 @@ if (ex.os.isPc) {
 } else if (ex.os.isiPhone) {
     var teminal = "iOS";
 }
-var teminal = 'Pc'
+var teminal = 'h5'
 
 axios.defaults.headers = {
     "x-api-version": "1.0",
