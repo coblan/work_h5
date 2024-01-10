@@ -1,5 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
+import {rawDecrypt, rawDecryptToStr} from './aes.js'
 import {
     getToken,
     removeToken,
@@ -72,6 +73,7 @@ if (ex.os.isPc) {
 } else if (ex.os.isiPhone) {
     var teminal = "iOS";
 }
+var teminal = 'Pc'
 
 axios.defaults.headers = {
     "x-api-version": "1.0",
@@ -128,8 +130,17 @@ async function pop_login_window(){
 
 async function process_resp(res){
     if (res) {
+        var resp_data=  res.data
+        try {
+            if(res.headers['x-encrypt']=='1'){
+                resp_data = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
+                resp_data = JSON.parse(resp_data)
+            }
+        }catch (e){
+            console.log(e)
+        }
         const data = {
-            data: res.data,
+            data: resp_data,
         };
         if (res.data.success==false ) {
             // 走不到内部函数的时候关掉loading
@@ -214,6 +225,7 @@ const request = (method, url, data, config = {}) => {
         url,
         method,
         data,
+        responseType: 'blob'
     });
 
     options.headers = options.headers || {};
