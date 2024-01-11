@@ -134,7 +134,7 @@ async function process_resp(res){
         try {
             if(res.headers['x-encrypt']=='1'){
                 var resp_data_str = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
-                resp_data = JSON.parse(resp_data)
+                resp_data = JSON.parse(resp_data_str)
             }else{
                 var resp_data_str = await blobToStr(resp_data)
                 resp_data = JSON.parse(resp_data_str)
