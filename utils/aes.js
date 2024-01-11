@@ -22,7 +22,9 @@ export async function decodeRawFromUrl(src){
     await ex.load_js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.1.1/crypto-js.min.js')
     var rt = await ex.getFile( src)
     var key='94a4b778g01ca4ab'
-    var base = await rawDecrypt(rt,key)
+    // var base = await rawDecrypt(rt,key)
+    var base = await rawDecryptToStr(rt,key)
+
     return base
 }
 
@@ -44,7 +46,8 @@ async function Decrypt(data,key) {
     // return blob;
 }
 export  async function rawDecrypt(data,key) {
-    // 直接解码,返回二进制,由atob返回字符串
+    // 直接解码, data 是二进制吧 ,由atob将base64转换为字符串
+    // 这个函数有问题，不再使用，atob转换，遇到中文是乱码
     var mydata = await blobToDataURL(data)
     var naked_base64 = mydata.slice(37,)
     // var wordArray = CryptoJS.enc.Base64.parse()
@@ -58,7 +61,8 @@ export  async function rawDecrypt(data,key) {
     return atob(bb)
 }
 export  async function rawDecryptToStr(data,key) {
-    // 直接解码,返回二进制
+    // 直接解码,字符串
+    await ex.load_js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.1.1/crypto-js.min.js')
     var mydata = await blobToDataURL(data)
     var naked_base64 = mydata.slice(37,)
     // var wordArray = CryptoJS.enc.Base64.parse()
@@ -68,6 +72,17 @@ export  async function rawDecryptToStr(data,key) {
         padding: CryptoJS.pad.Pkcs7
     });
     return decrypt.toString(CryptoJS.enc.Utf8)
+}
+
+export async function blobToStr(blob){
+    // 直接解码,字符串
+    var pro = new ex.FreePromise()
+    var a = new FileReader();
+    a.onload = function(e) {
+        pro.resolve(e.target.result)
+    }
+    a.readAsText(blob)
+    return pro.promise
 }
 
 function blobToDataURL(blob) {

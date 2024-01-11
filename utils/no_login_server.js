@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
-import {rawDecrypt, rawDecryptToStr} from './aes.js'
+import {rawDecrypt, rawDecryptToStr,blobToStr} from './aes.js'
 import {
     getToken,
     removeToken,
@@ -133,8 +133,11 @@ async function process_resp(res){
         var resp_data=  res.data
         try {
             if(res.headers['x-encrypt']=='1'){
-                resp_data = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
+                var resp_data_str = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
                 resp_data = JSON.parse(resp_data)
+            }else{
+                var resp_data_str = await blobToStr(resp_data)
+                resp_data = JSON.parse(resp_data_str)
             }
         }catch (e){
             console.log(e)
@@ -180,7 +183,6 @@ async function process_401(config){
         console.log('token过期，刷新token')
         try {
             // var url = store.state.url.service + `/home/token/refresh/${tokenObj.refreshToken}?t=1`
-
             var url =   store.state.url.service[0]  + `/home/token/refresh/${tokenObj.refreshToken}`
 
             var res = await axios.post(url, {})
@@ -225,6 +227,8 @@ const request = (method, url, data, config = {}) => {
         url,
         method,
         data,
+        // responseType:'json'
+
         responseType: 'blob'
     });
 
