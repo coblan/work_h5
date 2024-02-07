@@ -5,7 +5,7 @@ export async function decodeFromUrl(src){
     var search = ex.parseURL(src)
 
     if( search.pathname.endsWith('.aes')){
-        await ex.load_js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.1.1/crypto-js.min.js')
+        await ex.load_js(cfg.js_lib.crypto_js)
         var rt = await ex.getFile( src)
         var key='94a4b778g01ca4ab'
         var base = await Decrypt(rt,key)
@@ -19,7 +19,7 @@ export async function decodeFromUrl(src){
     }
 }
 export async function decodeRawFromUrl(src){
-    await ex.load_js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.1.1/crypto-js.min.js')
+    await ex.load_js(cfg.js_lib.crypto_js)
     var rt = await ex.getFile( src)
     var key='94a4b778g01ca4ab'
     // var base = await rawDecrypt(rt,key)
@@ -62,7 +62,7 @@ export  async function rawDecrypt(data,key) {
 }
 export  async function rawDecryptToStr(data,key) {
     // 直接解码,字符串
-    await ex.load_js('https://lf6-cdn-tos.bytecdntp.com/cdn/expire-1-M/crypto-js/4.1.1/crypto-js.min.js')
+    await ex.load_js(cfg.js_lib.crypto_js)
     var mydata = await blobToDataURL(data)
     var naked_base64 = mydata.slice(37,)
     // var wordArray = CryptoJS.enc.Base64.parse()
