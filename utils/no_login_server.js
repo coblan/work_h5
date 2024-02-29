@@ -136,12 +136,9 @@ async function process_resp(res){
                 var resp_data_str = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
                 resp_data = JSON.parse(resp_data_str)
             }else{
-                // var resp_data_str = await blobToStr(resp_data)
-                // resp_data = JSON.parse(resp_data_str)
+                var resp_data_str = await blobToStr(resp_data)
+                resp_data = JSON.parse(resp_data_str)
 
-                // var resp_data_str = resp_data
-                // resp_data = JSON.parse(resp_data_str)
-                resp_data = res.data
             }
         }catch (e){
             console.log(e)
@@ -164,6 +161,7 @@ async function process_resp(res){
     }
 }
 async function process_401(config){
+    debugger
     if(network.token_getter){
         await network.token_getter.promise
         return  axios.request(config); //response.config
