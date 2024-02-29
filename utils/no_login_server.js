@@ -139,8 +139,9 @@ async function process_resp(res){
                 // var resp_data_str = await blobToStr(resp_data)
                 // resp_data = JSON.parse(resp_data_str)
 
-                var resp_data_str = resp_data
-                resp_data = JSON.parse(resp_data_str)
+                // var resp_data_str = resp_data
+                // resp_data = JSON.parse(resp_data_str)
+                resp_data = res.data
             }
         }catch (e){
             console.log(e)
