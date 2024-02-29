@@ -149,11 +149,11 @@ async function process_resp(res){
         const data = {
             data: resp_data,
         };
-        if (res.data.success==false ) {
+        if (resp_data.success==false ) {
             // 走不到内部函数的时候关掉loading
             cfg.hide_load();
-            if(res.data.error){
-                cfg.showError(res.data.error);
+            if(resp_data.error){
+                cfg.showError(resp_data.error);
             }else{
                 cfg.showError('后台请求错误')
             }
