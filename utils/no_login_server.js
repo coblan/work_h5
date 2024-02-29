@@ -136,7 +136,10 @@ async function process_resp(res){
                 var resp_data_str = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
                 resp_data = JSON.parse(resp_data_str)
             }else{
-                var resp_data_str = await blobToStr(resp_data)
+                // var resp_data_str = await blobToStr(resp_data)
+                // resp_data = JSON.parse(resp_data_str)
+
+                var resp_data_str = resp_data
                 resp_data = JSON.parse(resp_data_str)
             }
         }catch (e){
