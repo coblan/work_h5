@@ -242,6 +242,8 @@ const request = (method, url, data, config = {}) => {
                 var processed_data = await process_resp(res)
                 if(processed_data){
                     resolve(processed_data)
+                }else{
+                    reject()
                 }
 
                 // process_resp(res,resolve)
@@ -277,6 +279,7 @@ const request = (method, url, data, config = {}) => {
                             resolve(processed_data)
                         }
                     }
+                    reject();
                     return;
                 }else if (error.response.status == 603) {
                     //特殊处理
@@ -284,10 +287,12 @@ const request = (method, url, data, config = {}) => {
                     cfg.hide_load()
                     removeToken()
                     cfg.showMsg("账号在其他设备登录")
+                    reject();
                     return;
                 } else if (error.response ) {
                     cfg.showError(error.toString());
                     cfg.hide_load()
+                    reject();
                     return
                 } else{
                     reject(error);
