@@ -1,6 +1,6 @@
 /* eslint-disable */
 import axios from "axios";
-import {rawDecrypt, rawDecryptToStr,blobToStr} from './aes.js'
+import {rawDecrypt, rawDecryptToStr, blobToStr,  strEncrypt,base64ToBlob,strEncryptToBlob} from './aes.js'
 import {
     getToken,
     removeToken,
@@ -95,6 +95,8 @@ axios.interceptors.request.use(
 
         request_config.headers["x-ns"] = window._gb_ns;
         request_config.headers["x-sign"] = window._gb_k;
+        request_config.headers["x-encrypt"] = 1;
+
         if (getToken()) {
             request_config.headers["Authorization"] = `${getToken().tokenType} ${
                 getToken().accessToken
@@ -161,7 +163,6 @@ async function process_resp(res){
     }
 }
 async function process_401(config){
-    debugger
     if(network.token_getter){
         await network.token_getter.promise
         return  axios.request(config); //response.config
@@ -315,8 +316,23 @@ export const server = {
         // }
         // return request("get", url, data, config);
         if(data){
-            url = ex.appendSearch(url,data)
+            var ep = ex.searchfy(data)
+            if(ep){
+                ep = strEncrypt(ep,'94a4b778g01ca4ab')
+                // ep = btoa(ep)
+                //  debugger
+                ep = encodeURIComponent(ep)
+                // ep = encodeURI(ep)
+                url = url + `?ep=${ep}`
+            }
+
+
+
+        //
+        //     debugger
+        //     url = ex.appendSearch(url,data)
         }
+
 
         return request("get", url,{}, config);
     },
@@ -324,13 +340,50 @@ export const server = {
         // if(!url.startsWith('http')){
         //     url = store.state.url.service + url
         // }
-        return request("post", url, data, config);
+
+        if(data){
+            data = JSON.stringify(data)
+
+            var data = strEncrypt(data,'94a4b778g01ca4ab')
+            // var data = btoa(data)
+            // debugger
+            // data =new blob([data]) //base64ToBlob(data)
+            // data = atob(data);
+            data = base64ToBlob(data)
+            // data = new blob
+            // data = await data. arrayBuffer()
+
+        }
+        return request("post", url, data,  {headers: {"content-type": 'application/json'} } );
+        // return request("post", url, data, config);
     },
     put(url, data, config) {
-        return request("put", url, data, config);
+        if(data){
+            data = JSON.stringify(data)
+
+            var data = strEncrypt(data,'94a4b778g01ca4ab')
+            // var data = btoa(data)
+            // debugger
+            // data =new blob([data]) //base64ToBlob(data)
+            // data = atob(data);
+            data = base64ToBlob(data)
+            // data = new blob
+            // data = await data. arrayBuffer()
+
+        }
+
+        return request("put", url, data, {headers: {"content-type": 'application/json'} } );
+        // return request("put", url, data, config);
     },
     delete(url, data, config) {
-        return request("delete", url, data, config);
+        if(data){
+            data = JSON.stringify(data)
+            var data = strEncrypt(data,'94a4b778g01ca4ab')
+            data = base64ToBlob(data)
+
+
+        }
+        return request("delete", url, data, {headers: {"content-type": 'application/json'} }  );
         // return new Promise((resolve, reject) => {
         //   axios
         //     .delete(url, { params: data })

@@ -28,6 +28,45 @@ export async function decodeRawFromUrl(src){
     return base
 }
 
+export  function strEncrypt(data,key) {
+    // @data:字符串
+    // @key:aes加密的key
+    // 返回 base64字符串代表byte数据
+
+    // var arrayBuffer =  await data.arrayBuffer()  // await  blobToArrayBuffer(data)
+    // var wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
+    // var mydata = await blobToDataURL(data)
+    // var naked_base64= mydata.slice(37,)
+    // var wordArray = CryptoJS.enc.Base64.parse()
+    var AES_KEY = CryptoJS.enc.Utf8.parse(key); //key //
+    let encrypt = CryptoJS.AES.encrypt(data, AES_KEY, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7 });
+    return encrypt.toString()
+    // var bb = CryptoJS.enc.Base64.stringify(encrypt)
+    // debugger
+    // return bb
+
+}
+
+export  function strEncryptToBlob(data,key) {
+    // var arrayBuffer =  await data.arrayBuffer()  // await  blobToArrayBuffer(data)
+    // var wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
+    // var mydata = await blobToDataURL(data)
+    // var naked_base64= mydata.slice(37,)
+    // var wordArray = CryptoJS.enc.Base64.parse()
+    var AES_KEY = CryptoJS.enc.Utf8.parse(key); //key //
+    let encrypt = CryptoJS.AES.encrypt(data, AES_KEY, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7 });
+    debugger
+    return encrypt.toString()
+    // var bb = CryptoJS.enc.Base64.stringify(encrypt)
+    // debugger
+    // return bb
+
+}
+
 async function Decrypt(data,key) {
     // var arrayBuffer =  await data.arrayBuffer()  // await  blobToArrayBuffer(data)
     // var wordArray = CryptoJS.lib.WordArray.create(arrayBuffer);
@@ -95,4 +134,24 @@ function blobToDataURL(blob) {
     a.readAsDataURL(blob);
     return pro.promise
     // return URL.createObjectURL(blob);
+}
+
+export function  base64ToBlob(b64Data, contentType='', sliceSize=512){
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+        const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+        const byteNumbers = new Array(slice.length);
+        for (let i = 0; i < slice.length; i++) {
+            byteNumbers[i] = slice.charCodeAt(i);
+        }
+
+        const byteArray = new Uint8Array(byteNumbers);
+        byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, {type: contentType});
+    return blob;
 }
