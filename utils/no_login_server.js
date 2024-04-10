@@ -316,31 +316,36 @@ export const server = {
         // }
         // return request("get", url, data, config);
         if(data){
-            var ep = ex.searchfy(data)
-            if(ep){
-                ep = strEncrypt(ep,'94a4b778g01ca4ab')
-                // ep = btoa(ep)
-                //  debugger
-                ep = encodeURIComponent(ep)
-                // ep = encodeURI(ep)
-                url = url + `?ep=${ep}`
-            }
+            // var ep = ex.searchfy(data)
+            var ep = ex.appendSearch(url,data)
+            // if(ep){
+            //     ep = strEncrypt(ep,'94a4b778g01ca4ab')
+            //     // ep = btoa(ep)
+            //     //  debugger
+            //     ep = encodeURIComponent(ep)
+            //     // ep = encodeURI(ep)
+            //     url = url + `?ep=${ep}`
+            // }
 
 
 
         //
         //     debugger
         //     url = ex.appendSearch(url,data)
+        }else{
+            ep=url
         }
 
-
-        return request("get", url,{}, config);
+        ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        ep = encodeURIComponent(ep)
+        var ep_url = `fun?ep=${ep}`
+        return request("get", ep_url,{}, config);
+        // return request("get", url,{}, config);
     },
     post(url, data, config) {
         // if(!url.startsWith('http')){
         //     url = store.state.url.service + url
         // }
-
         if(data){
             data = JSON.stringify(data)
 
@@ -352,9 +357,13 @@ export const server = {
             data = base64ToBlob(data)
             // data = new blob
             // data = await data. arrayBuffer()
-
         }
-        return request("post", url, data,  {headers: {"content-type": 'application/json'} } );
+        var ep=url
+        ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        ep = encodeURIComponent(ep)
+        var ep_url = `fun?ep=${ep}`
+        return request("post", ep_url, data,  {headers: {"content-type": 'application/json'} } );
+        // return request("post", url, data,  {headers: {"content-type": 'application/json'} } );
         // return request("post", url, data, config);
     },
     put(url, data, config) {
@@ -371,8 +380,12 @@ export const server = {
             // data = await data. arrayBuffer()
 
         }
-
-        return request("put", url, data, {headers: {"content-type": 'application/json'} } );
+        var ep=url
+        ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        ep = encodeURIComponent(ep)
+        var ep_url = `fun?ep=${ep}`
+        return request("put", url, ep_url, {headers: {"content-type": 'application/json'} } );
+        // return request("put", url, data, {headers: {"content-type": 'application/json'} } );
         // return request("put", url, data, config);
     },
     delete(url, data, config) {
@@ -380,10 +393,14 @@ export const server = {
             data = JSON.stringify(data)
             var data = strEncrypt(data,'94a4b778g01ca4ab')
             data = base64ToBlob(data)
-
-
         }
-        return request("delete", url, data, {headers: {"content-type": 'application/json'} }  );
+        var ep=url
+        ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        ep = encodeURIComponent(ep)
+        var ep_url = `fun?ep=${ep}`
+        return request("delete", ep_url, data, {headers: {"content-type": 'application/json'} }  );
+
+        // return request("delete", url, data, {headers: {"content-type": 'application/json'} }  );
         // return new Promise((resolve, reject) => {
         //   axios
         //     .delete(url, { params: data })
