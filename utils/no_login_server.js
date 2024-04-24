@@ -77,11 +77,13 @@ var teminal = 'h5'
 
 axios.defaults.headers = {
     "x-api-version": "1.0",
-    "x-device": JSON.stringify({
-        DeviceCode: uuid,
-        DeviceName: "",
-        Terminal: teminal, //'Pc'
-    }),
+
+    // "x-device": JSON.stringify({
+    //     DeviceCode: uuid,
+    //     DeviceName: "",
+    //     Terminal: teminal, //'Pc'
+    // }),
+
 };
 axios.defaults.timeout = 30000; // 请求超时时间s
 axios.defaults.withCredentials = false;
@@ -90,12 +92,23 @@ var network={}
 //请求拦截
 axios.interceptors.request.use(
     (request_config) => {
-        request_config.headers["x-ts"] = window._gb_ts;
-        request_config.headers["x-id"] = config.x_id; // 'Shark040739372D97'// 'web5a555c549f69d6701c0947640e0'
+        // request_config.headers["x-ts"] = window._gb_ts;
+        // request_config.headers["x-id"] = config.x_id; // 'Shark040739372D97'// 'web5a555c549f69d6701c0947640e0'
 
-        request_config.headers["x-ns"] = window._gb_ns;
-        request_config.headers["x-sign"] = window._gb_k;
+        // request_config.headers["x-ns"] = window._gb_ns;
+        // request_config.headers["x-sign"] = window._gb_k;
         request_config.headers["x-encrypt"] = 1;
+        var eh = {
+            DeviceCode: uuid,
+            DeviceName: "",
+            Terminal: teminal,
+            Ts:window._gb_ts,
+            Ns: window._gb_ns,
+            Sign:window._gb_k,
+            AppId:config.x_id
+        }
+        eh =  JSON.stringify(eh);
+        request_config.headers["x-eh"] = strEncrypt(eh,'94a4b778g01ca4ab')
 
         if (getToken()) {
             request_config.headers["Authorization"] = `${getToken().tokenType} ${
