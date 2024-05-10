@@ -198,9 +198,9 @@ async function process_401(config){
 
         console.log('token过期，刷新token')
         try {
-            // var url = store.state.url.service + `/home/token/refresh/${tokenObj.refreshToken}?t=1`
-            var url =   store.state.url.service[0]  + `/home/token/refresh/${tokenObj.refreshToken}`
 
+            // var url =   store.state.url.service[0]  + `/home/token/refresh/${tokenObj.refreshToken}`
+            var url =    `/home/token/refresh/${tokenObj.refreshToken}`
             var res = await axios.post(url, {})
             if (res.data.success) {
                 //
