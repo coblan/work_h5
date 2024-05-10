@@ -207,7 +207,7 @@ async function process_401(config){
             ep = encodeURIComponent(ep)
             var ep_url = `fun?ep=${ep}`
 
-            var res = await axios.post(ep_url, {},{headers: {"content-type": 'application/json'} }  )
+            var res = await axios.post(ep_url, '',{headers: {"content-type": 'application/json'} }  )
 
             if (res.data.success) {
                 //
