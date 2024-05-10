@@ -207,7 +207,13 @@ async function process_401(config){
             ep = encodeURIComponent(ep)
             var ep_url = `fun?ep=${ep}`
 
-            var res = await axios.post(ep_url, '',{headers: {"content-type": 'application/json'} }  )
+            data = JSON.stringify({})
+            var data = strEncrypt(data,'94a4b778g01ca4ab')
+            data = base64ToBlob(data)
+
+
+
+            var res = await axios.post(ep_url, data,{headers: {"content-type": 'application/json'} }  )
 
             if (res.data.success) {
                 //
