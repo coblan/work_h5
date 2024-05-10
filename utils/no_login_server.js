@@ -201,7 +201,14 @@ async function process_401(config){
 
             // var url =   store.state.url.service[0]  + `/home/token/refresh/${tokenObj.refreshToken}`
             var url =    `/home/token/refresh/${tokenObj.refreshToken}`
-            var res = await axios.post(url, {})
+
+            var ep=url
+            ep = strEncrypt(ep,'94a4b778g01ca4ab')
+            ep = encodeURIComponent(ep)
+            var ep_url = `fun?ep=${ep}`
+
+            var res = await axios.post(ep_url, {})
+
             if (res.data.success) {
                 //
                 setToken(res.data.data);
