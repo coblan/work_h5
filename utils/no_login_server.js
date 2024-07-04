@@ -108,6 +108,7 @@ axios.interceptors.request.use(
             AppId:config.x_id
         }
         eh =  JSON.stringify(eh);
+        console.log(eh)
         request_config.headers["x-eh"] = strEncrypt(eh,'94a4b778g01ca4ab')
 
         if (getToken()) {

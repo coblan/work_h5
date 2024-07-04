@@ -28,6 +28,19 @@ export async function decodeRawFromUrl(src){
     return base
 }
 
+export function decrypt_string(base64_string,key){
+    /*
+    * @base64_string:需要解密的字符串，实际上是一个base64
+    * 返回一个字符串
+    */
+    var AES_KEY = CryptoJS.enc.Utf8.parse(key);
+    let decrypt = CryptoJS.AES.decrypt(base64_string, AES_KEY, {
+        mode: CryptoJS.mode.ECB,
+        padding: CryptoJS.pad.Pkcs7
+    });
+    return decrypt.toString(CryptoJS.enc.Utf8)
+}
+
 export  function strEncrypt(data,key) {
     // @data:字符串
     // @key:aes加密的key
