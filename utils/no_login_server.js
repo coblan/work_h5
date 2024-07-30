@@ -97,7 +97,7 @@ axios.interceptors.request.use(
 
         // request_config.headers["x-ns"] = window._gb_ns;
         // request_config.headers["x-sign"] = window._gb_k;
-        request_config.headers["x-encrypt"] = 1;
+        request_config.headers["x-encrypt"] = 2;
         var eh = {
             DeviceCode: uuid,
             DeviceName: "",
@@ -108,7 +108,7 @@ axios.interceptors.request.use(
             AppId:config.x_id
         }
         eh =  JSON.stringify(eh);
-        console.log(eh)
+        // console.log(eh)
         request_config.headers["x-eh"] = strEncrypt(eh,'94a4b778g01ca4ab')
 
         if (getToken()) {
@@ -176,6 +176,18 @@ async function process_resp(res){
         }
     }
 }
+function encode_all_url(url){
+    // var url =    `/home/token/refresh/${tokenObj.refreshToken}`
+
+    var ep=url
+    ep = ex.appendSearch(ep,{tst:Date.now()})
+    ep = strEncrypt(ep,'94a4b778g01ca4ab')
+    ep = ep.replaceAll('+','-')
+    ep = ep.replaceAll('/','_')
+    // ep = encodeURIComponent(ep)
+    return ep
+
+}
 async function process_401(config){
     if(network.token_getter){
         await network.token_getter.promise
@@ -203,10 +215,11 @@ async function process_401(config){
             // var url =   store.state.url.service[0]  + `/home/token/refresh/${tokenObj.refreshToken}`
             var url =    `/home/token/refresh/${tokenObj.refreshToken}`
 
-            var ep=url
-            ep = strEncrypt(ep,'94a4b778g01ca4ab')
-            ep = encodeURIComponent(ep)
-            var ep_url = `fun?ep=${ep}`
+            // var ep=url
+            // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+            // ep = encodeURIComponent(ep)
+            // var ep_url = `fun?ep=${ep}`
+            var ep_url =  encode_all_url(url)
 
             data = JSON.stringify({})
             var data = strEncrypt(data,'94a4b778g01ca4ab')
@@ -363,9 +376,11 @@ export const server = {
             ep=url
         }
 
-        ep = strEncrypt(ep,'94a4b778g01ca4ab')
-        ep = encodeURIComponent(ep)
-        var ep_url = `fun?ep=${ep}`
+        // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        // ep = encodeURIComponent(ep)
+        // var ep_url = `fun?ep=${ep}`
+        var ep_url = encode_all_url(ep)
+
         return request("get", ep_url,{}, config);
         // return request("get", url,{}, config);
     },
@@ -386,9 +401,10 @@ export const server = {
             // data = await data. arrayBuffer()
         }
         var ep=url
-        ep = strEncrypt(ep,'94a4b778g01ca4ab')
-        ep = encodeURIComponent(ep)
-        var ep_url = `fun?ep=${ep}`
+        // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        // ep = encodeURIComponent(ep)
+        // var ep_url = `fun?ep=${ep}`
+        var ep_url = encode_all_url(ep)
         return request("post", ep_url, data,  {headers: {"content-type": 'application/json'} } );
         // return request("post", url, data,  {headers: {"content-type": 'application/json'} } );
         // return request("post", url, data, config);
@@ -408,9 +424,10 @@ export const server = {
 
         }
         var ep=url
-        ep = strEncrypt(ep,'94a4b778g01ca4ab')
-        ep = encodeURIComponent(ep)
-        var ep_url = `fun?ep=${ep}`
+        // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        // ep = encodeURIComponent(ep)
+        // var ep_url = `fun?ep=${ep}`
+        var ep_url = encode_all_url(ep)
         return request("put", url, ep_url, {headers: {"content-type": 'application/json'} } );
         // return request("put", url, data, {headers: {"content-type": 'application/json'} } );
         // return request("put", url, data, config);
@@ -422,9 +439,10 @@ export const server = {
             data = base64ToBlob(data)
         }
         var ep=url
-        ep = strEncrypt(ep,'94a4b778g01ca4ab')
-        ep = encodeURIComponent(ep)
-        var ep_url = `fun?ep=${ep}`
+        // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+        // ep = encodeURIComponent(ep)
+        // var ep_url = `fun?ep=${ep}`
+        var ep_url = encode_all_url(ep)
         return request("delete", ep_url, data, {headers: {"content-type": 'application/json'} }  );
 
         // return request("delete", url, data, {headers: {"content-type": 'application/json'} }  );
