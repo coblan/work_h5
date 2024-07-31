@@ -181,11 +181,18 @@ function encode_all_url(url){
 
     var ep=url
     ep = ex.appendSearch(ep,{tst:Date.now()})
-    ep = strEncrypt(ep,'94a4b778g01ca4ab')
+    var pre_key = '94a4b778'
+    var suf= ''
+    for (var i=0;i<8;i++){
+        suf+= ex.sample(['0','1','2','3','4','5','6','7','8','9','a','b','c','d','e','f'])
+    }
+    // ep = strEncrypt(ep,'94a4b778g01ca4ab')
+    ep = strEncrypt(ep,pre_key+suf)
+    // console.log('pre_key=',pre_key)
     ep = ep.replaceAll('+','-')
     ep = ep.replaceAll('/','_')
     // ep = encodeURIComponent(ep)
-    return ep
+    return suf+ep
 
 }
 async function process_401(config){
