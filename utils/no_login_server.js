@@ -148,7 +148,7 @@ async function process_resp(res){
     if (res) {
         var resp_data=  res.data
         try {
-            if(res.headers['x-encrypt']=='1'){
+            if(res.headers['x-encrypt']=='2' || res.headers['x-encrypt']=='1'){
                 var resp_data_str = await rawDecryptToStr(resp_data,'94a4b778g01ca4ab')
                 resp_data = JSON.parse(resp_data_str)
             }else{
@@ -226,15 +226,17 @@ async function process_401(config){
             // ep = strEncrypt(ep,'94a4b778g01ca4ab')
             // ep = encodeURIComponent(ep)
             // var ep_url = `fun?ep=${ep}`
-            var ep_url =  encode_all_url(url)
+            // var ep_url =  encode_all_url(url)
 
-            data = JSON.stringify({})
-            var data = strEncrypt(data,'94a4b778g01ca4ab')
-            data = base64ToBlob(data)
+            // data = JSON.stringify({})
+            // var data = strEncrypt(data,'94a4b778g01ca4ab')
+            // data = base64ToBlob(data)
 
+            // var res = await axios.post(ep_url, {},{headers: {"content-type": 'application/json'} }  )
+            var res = await  server.post(url,{})
 
-
-            var res = await axios.post(ep_url, data,{headers: {"content-type": 'application/json'} }  )
+            // var resp_data_str = await rawDecryptToStr(res.data,'94a4b778g01ca4ab')
+            // var resp_data = JSON.parse(resp_data_str)
 
             if (res.data.success) {
                 //
