@@ -5,7 +5,8 @@ export  default  {
             return url
         }else{
             if(url.endsWith('.aes')){
-                var cdn_domain = store.state.url.encryptCdn[0]
+                // var cdn_domain = store.state.url.encryptCdn[0]
+                var cdn_domain = store.state.url.fast_h5_encryptCdn // 本地查询的最快h5 cdn
 
             }else{
                 var cdn_domain = store.state.url.cdn[0]

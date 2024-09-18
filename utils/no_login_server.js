@@ -360,6 +360,7 @@ export const server = {
         return this.get(url, data, config)
     },
     get(url, data, config) {
+        console.log(url)
         // if(!url.startsWith('http')){
         //     url = store.state.url.service + url
         // }
@@ -397,6 +398,7 @@ export const server = {
         // if(!url.startsWith('http')){
         //     url = store.state.url.service + url
         // }
+        console.log(url)
         if(data){
             data = JSON.stringify(data)
 
